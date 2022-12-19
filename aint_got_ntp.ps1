@@ -31,7 +31,7 @@ Start-Sleep -m 5000
 
 # Read the sync result
 $sync_result = $ie.Document.getElementById("syncH").innerHTML()
-echo "Read from time.is: " + $sync_result
+echo ("Read from time.is: " + $sync_result)
 
 # Check the sync result
 switch -regex ($sync_result) {
@@ -39,27 +39,27 @@ switch -regex ($sync_result) {
     $differnce = select-string 'Your clock is (\d+\.\d+) seconds behind' -inputobject $sync_result
     $seconds = $differnce.Matches.groups[1].value
     $cmd = "Set-Date -Adjust 00:00:" + $seconds
-    echo "Synchronization command: " + $cmd
+    echo ("Synchronization command: " + $cmd)
     iex $cmd }
   'Your clock is \d+\.\d+ seconds ahead' {
     $differnce = select-string 'Your clock is (\d+\.\d+) seconds ahead' -inputobject $sync_result
     $seconds = $differnce.Matches.groups[1].value
     $cmd = "Set-Date -Adjust -00:00:" + $seconds
-    echo "Synchronization command: " + $cmd
+    echo ("Synchronization command: " + $cmd)
     iex $cmd }
   'Your clock is (\d+) minute[s]? and (\d+\.\d+) seconds ahead.' {
     $differnce = select-string 'Your clock is (\d+) minute[s]? and (\d+\.\d+) seconds ahead.' -inputobject $sync_result
     $minutes = $differnce.Matches.groups[1].value
     $seconds = $differnce.Matches.groups[2].value
     $cmd = "Set-Date -Adjust -00:" + $minutes + ":" + $seconds
-    echo "Synchronization command: " + $cmd
+    echo ("Synchronization command: " + $cmd)
     iex $cmd }
   'Your clock is (\d+) minute[s]? and (\d+\.\d+) seconds behind.' {
     $differnce = select-string 'Your clock is (\d+) minute[s]? and (\d+\.\d+) seconds behind.' -inputobject $sync_result
     $minutes = $differnce.Matches.groups[1].value
     $seconds = $differnce.Matches.groups[2].value
     $cmd = "Set-Date -Adjust 00:" + $minutes + ":" + $seconds
-    echo "Synchronization command: " + $cmd
+    echo ("Synchronization command: " + $cmd)
     iex $cmd }
   'Your time is exact!' {
     echo 'Time is exact, no action taken.' }      
